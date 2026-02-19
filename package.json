@@ -1,0 +1,16 @@
+{
+  "name": "symbolsmcptest",
+  "version": "1.0.0",
+  "description": "Simple To-Do App built with Symbols",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "dependencies": {
+    "smbls": "^2.34.31"
+  },
+  "private": true,
+  "devDependencies": {
+    "parcel": "^2.16.4"
+  }
+}
