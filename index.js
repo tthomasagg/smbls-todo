@@ -1,54 +1,72 @@
-
 import { create } from 'smbls'
 
-// Import the todo page
-import { todo } from './smbls/pages/todo.js'
+// Pages
+import { main } from './smbls/pages/main.js'
 
-// Import all components
-import { TaskListItem } from './smbls/components/TaskListItem.js'
-import { TaskForm } from './smbls/components/TaskForm.js'
-import { SortControls } from './smbls/components/SortControls.js'
+// Components — all UI building blocks
+import {
+  AppHeader,
+  PendingBadge,
+  DoneBadge,
+  TaskCard,
+  EmptyState,
+  SortBar,
+  TaskFormModal,
+  ErrorItem,
+} from './smbls/components/index.js'
 
-// Import all functions
-import taskRepository from './smbls/functions/taskRepository.js'
-import taskService from './smbls/functions/taskService.js'
-import taskSorter from './smbls/functions/taskSorter.js'
-import { Task } from './smbls/types/Task.js'
+// Domain functions — pure logic + imperative list renderer
+import {
+  validateTask,
+  buildTask,
+  listTasks,
+  renderTaskList,
+} from './smbls/functions/index.js'
 
-// Register all components and functions globally
-const components = {
-    TaskListItem,
-    TaskForm,
-    SortControls
-}
+// Design system — AirBnB-inspired tokens
+import designSystem from './smbls/designSystem/index.js'
 
-const functions = {
-    taskRepository,
-    taskService,
-    taskSorter,
-    Task
-}
-
-// Create and render the app
-create({
-    ...todo,
-    parent: document.body
-}, {
-    components,
-    functions,
-    state: {
+create(
+    {
+      extends: 'Page',
+      ...main,
+      parent: document.body,
+    },
+    {
+      designSystem,
+      components: {
+        AppHeader,
+        PendingBadge,
+        DoneBadge,
+        TaskCard,
+        EmptyState,
+        SortBar,
+        TaskFormModal,
+        ErrorItem,
+      },
+      functions: {
+        validateTask,
+        buildTask,
+        listTasks,
+        renderTaskList,
+      },
+      state: {
+        // Data layer — in-memory task store
         tasks: [],
-        showTaskForm: false,
+
+        // UI state — sort controls
+        primarySort: '',
+        primaryDir: 'ASC',
+        secondarySort: '',
+        secondaryDir: 'ASC',
+
+        // UI state — form
         editingTaskId: null,
-        primarySortField: '',
-        primarySortDirection: 'ASC',
-        secondarySortField: '',
-        secondarySortDirection: 'ASC',
-        taskListVersion: 0,
         formTitle: '',
         formDescription: '',
         formDueDate: new Date().toISOString().split('T')[0],
         formStatus: 'PENDING',
-        formErrors: []
+        formErrors: [],
+      },
     }
-})
+)
